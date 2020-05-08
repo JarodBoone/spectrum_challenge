@@ -1,14 +1,23 @@
 function [signal_point,new_data,new_msg] = send_1(r_trans,r_reci,t,n,e,data,msg)
 
+%r_trans: list of everything that has been sent by the transmitters
+%r_reci: list of everything that has been sent by the recievers 
+%t: timeline 
+%n: floor divided by 2 is the current timestep 
+%e: energy left for the transmitter 
+%data: scrachpad_tra
+%
 signal_point = 0;
 new_data = data;
 new_msg = msg;
 
+
 if isempty(data)
-    data = [0 1000 0];
+    data = [0 1000 0]; %???
     new_data = data;
     r_trans = [0 0];
 end
+
 
 if e == 0 || r_trans(end,end) == 154 || r_reci(end,end) == 198
     data(1,1) = 1;
@@ -20,7 +29,7 @@ if data(1,1) == 0
             if msg(1,1) == 0
                 signal_point = sin(2*pi()*10*t(1,n))/1.5;
             else
-                signal_point = sin(2*pi()*1000*t(1,n))/1.5;
+                signal_point = cos(2*pi()*10*t(1,n))/1.5;
             end
             if data(1,3)-1 > 0
                 new_data(1,3) = data(1,3) - 1;
