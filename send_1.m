@@ -7,7 +7,7 @@ new_msg = msg;
 if isempty(data)
     data = [0 1000 0];
     new_data = data;
-    r_trans = [0 0];
+    r_trans = [0 0]; %Override transmission history to 
 end
 
 if e == 0 || r_trans(end,end) == 154 || r_reci(end,end) == 198
