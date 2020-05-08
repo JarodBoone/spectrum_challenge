@@ -24,12 +24,12 @@ end
 
 % Assigning names through inputs:
 name_1 = join([name_group_1,' (red)']);
-tra_1 = name_tra_1;
-rec_1 = name_rec_1;
+tra_1 = name_tra_1; %send_1 
+rec_1 = name_rec_1; %reci_1 
 
 name_2 = join([name_group_2,' (black)']);
-tra_2 = name_tra_2;
-rec_2 = name_rec_2;
+tra_2 = name_tra_2; %send_2
+rec_2 = name_rec_2; %reci_2
 
 % Time:
 Fs = 25*10^(3); % The sampling frequency
@@ -106,6 +106,7 @@ scr_2 = zeros(1,msg_size);
 if strcmp(game_mode,'test')
     for i = 1:loop_max-1
         if mod(i,2)
+            % call send_1 
             [signal_tra_1,new_scratchpad_tra_1,new_msg_1] = tra_1(r_tra,r_rec,t,i,e_tra_1,scratchpad_tra_1,my_msg_1);
             if enorg(e_tra_1,signal_tra_1) > 0
                 [c_tra(i+1),r_tra(i+1)] = channol(signal_tra_1,0,0,sig);
@@ -118,6 +119,7 @@ if strcmp(game_mode,'test')
                 my_msg_1 = new_msg_1;
             end
         else
+            % call reci_1 
             [signal_rec_1,new_scratchpad_rec_1,new_bits_rec_1] = rec_1(r_rec,r_tra,t,i,e_rec_1,scratchpad_rec_1);
             if enorg(e_rec_1,signal_rec_1) > 0
                 [c_rec(i+1),r_rec(i+1)] = channol(signal_rec_1,0,0,sig);
