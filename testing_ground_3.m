@@ -33,7 +33,7 @@ rec_2 = name_rec_2; %reci_2
 
 % Time:
 Fs = 25*10^(3); % The sampling frequency
-t_max = 120;    % The total number of timesteps 
+t_max = 120;    % The total time 
 loop_max = Fs*t_max+1; % The total number of loop steps
 t = linspace(0,t_max,loop_max); % The time line 
 
