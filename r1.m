@@ -7,7 +7,7 @@ signal_point = 0;
 on = 0; 
 startup_delay = 1000; 
 pause = 3; 
-send_steps = 450; 
+send_steps = 250; 
 new_bits = []; 
 
 new_data = data; 
@@ -39,12 +39,12 @@ if data(1,1) == 0 % if on
             else
                 new_data(1,3) = 0;
                 new_data(1,2) = 3;
-                a1 = cos(2*pi()*f1*t(1,n-send_steps:n));
-                a2 = cos(2*pi()*f2*t(1,n-send_steps:n));
-                a3 = cos(2*pi()*f3*t(1,n-send_steps:n));
-                a4 = cos(2*pi()*f4*t(1,n-send_steps:n));
-                a5 = cos(2*pi()*f5*t(1,n-send_steps:n));
-                a6 = cos(2*pi()*f6*t(1,n-send_steps:n));
+                a1 = sin(2*pi()*f1*t(1,n-send_steps:n));
+                a2 = sin(2*pi()*f2*t(1,n-send_steps:n));
+                a3 = sin(2*pi()*f3*t(1,n-send_steps:n));
+                a4 = sin(2*pi()*f4*t(1,n-send_steps:n));
+                a5 = sin(2*pi()*f5*t(1,n-send_steps:n));
+                a6 = sin(2*pi()*f6*t(1,n-send_steps:n));
                 wave = r_trans(n-send_steps:n);
                 
                 if (dot(wave,a1) > 0) b1 = 1;
@@ -59,19 +59,19 @@ if data(1,1) == 0 % if on
                 else b5 = 0; end
                 if (dot(wave,a6) > 0) b6 = 1;
                 else b6 = 0; end
-                
-                p1 = xor(xor(b1,b2),b4); 
-                p2 = xor(xor(b1,b3),b5);
-                p3 = xor(xor(b2,b3),b6); 
-                
-                if (p1 && p2 && ~p3) 
-                    b1 = ~b1;
-                elseif(p1 && ~p2 && p3) 
-                    b2 = ~b2;
-                        
-                elseif(~p1 && p2 && p3) 
-                    b3 = ~b3;     
-                end
+%                 
+%                 p1 = xor(xor(b1,b2),b4); 
+%                 p2 = xor(xor(b1,b3),b5);
+%                 p3 = xor(xor(b2,b3),b6); 
+%                 
+%                 if (p1 && p2 && ~p3) 
+%                     b1 = ~b1;
+%                 elseif(p1 && ~p2 && p3) 
+%                     b2 = ~b2;
+%                         
+%                 elseif(~p1 && p2 && p3) 
+%                     b3 = ~b3;     
+%                 end
           
                 new_bits = [new_bits,b1,b2,b3];
              
@@ -80,7 +80,7 @@ if data(1,1) == 0 % if on
             end
         end
     else
-        disp("please god here at least") 
+        %disp("please god here at least") 
         % Countdown startup delay
         if data(1,2)-1 > 0
             new_data(1,2) = data(1,2) - 1;
