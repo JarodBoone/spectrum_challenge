@@ -1,4 +1,4 @@
-function [signal_point,new_data,new_bits] = r1_no_p(r_reci,r_trans,t,n,e,data)
+function [signal_point,new_data,new_bits] = r_experiment(r_reci,r_trans,t,n,e,data)
 
 % Want to use a 4 dimensional signal space to send 5 bits (3 info 2 parity)
 % We iterate over the message bits by 3
@@ -73,3 +73,4 @@ if data(1,1) == 0 % if on
 end
 
 end
+
