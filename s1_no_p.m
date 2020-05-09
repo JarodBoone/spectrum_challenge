@@ -8,7 +8,7 @@ signal_point = 0;
 on = 0; 
 startup_delay = 1000; 
 pause = 3; 
-send_steps = 435; 
+send_steps = 440; 
 
 
 new_data = data; 
@@ -66,7 +66,14 @@ if data(1,1) == 0 % if on
             % Transmit a signal point 
             signal_point = (b1 * sin(2*pi()*f1*t(1,n)) + ...
                 b2 * sin(2*pi()*f2*t(1,n)) + ...
-                b3 * sin(2*pi()*f3*t(1,n)))/(1.6);
+                b3 * sin(2*pi()*f3*t(1,n)))/(1.5);
+            
+            % Results: 7330 with signal / 1.6 and time step of 435
+            %          7420 with signal / sqrt(2) and time step of 435 (but ran
+            %          out of energy)
+            %          7515 with signal / 1.5 and time step of 440 
+            %          7460 with signal / 1.7, values of +-1.1 and time
+            %          step of 440
             
             % countdown 3rd data index 
             if data(1,3)-1 > 0
