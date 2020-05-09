@@ -1,4 +1,4 @@
-function [signal_point,new_data,new_bits] = r1(r_reci,r_trans,t,n,e,data)
+function [signal_point,new_data,new_bits] = r1_no_p(r_reci,r_trans,t,n,e,data)
 
 % Want to use a 4 dimensional signal space to send 5 bits (3 info 2 parity)
 % We iterate over the message bits by 3
@@ -15,9 +15,9 @@ new_data = data;
 f1 = 500; 
 f2 = 1000; 
 f3 = 2000; 
-f4 = 4000; 
-f5 = 8000; 
-f6 = 250; 
+% f4 = 4000; 
+% f5 = 8000; 
+% f6 = 250; 
 
 %% Start doing stuff 
 
@@ -46,40 +46,40 @@ if data(1,1) == 0 % if on
                 a1 = sin(2*pi()*f1*t(1,n-send_steps:n));
                 a2 = sin(2*pi()*f2*t(1,n-send_steps:n));
                 a3 = sin(2*pi()*f3*t(1,n-send_steps:n));
-                a4 = sin(2*pi()*f4*t(1,n-send_steps:n));
-                a5 = sin(2*pi()*f5*t(1,n-send_steps:n));
-                a6 = sin(2*pi()*f6*t(1,n-send_steps:n));
+           
                 wave = r_trans(n-send_steps:n);
                 
+                display(dot(wave,a1))
+
                 if (dot(wave,a1) > 0) b1 = 1;
                 else b1 = 0; end
                 if (dot(wave,a2) > 0) b2 = 1;
                 else b2 = 0; end
                 if (dot(wave,a3) > 0) b3 = 1;
                 else b3 = 0; end
-                if (dot(wave,a4) > 0) b4 = 1;
-                else b4 = 0; end
-                if (dot(wave,a5) > 0) b5 = 1;
-                else b5 = 0; end
-                if (dot(wave,a6) > 0) b6 = 1;
-                else b6 = 0; end
+%                 if (dot(wave,a4) > 0) b4 = 1;
+%                 else b4 = 0; end
+%                 if (dot(wave,a5) > 0) b5 = 1;
+%                 else b5 = 0; end
+%                 if (dot(wave,a6) > 0) b6 = 1;
+%                 else b6 = 0; end
                 
-                p1 = xor(xor(b1,b2),b4); 
-                p2 = xor(xor(b1,b3),b5);
-                p3 = xor(xor(b2,b3),b6); 
-                
-                if (p1 && p2 && ~p3) 
-                    b1 = ~b1;
-%                     display("b1 corrected")
-                elseif(p1 && ~p2 && p3) 
-                    b2 = ~b2;
-%                     display("b2 corrected")       
-                elseif(~p1 && p2 && p3) 
-                    b3 = ~b3; 
-%                     display("b3 corrected")
-%                 else
-%                     display("not corrected")
-                end
+%                 p1 = xor(xor(b1,b2),b4); 
+%                 p2 = xor(xor(b1,b3),b5);
+%                 p3 = xor(xor(b2,b3),b6); 
+%                 
+%                 if (p1 && p2 && ~p3) 
+%                     b1 = ~b1;
+% %                     display("b1 corrected")
+%                 elseif(p1 && ~p2 && p3) 
+%                     b2 = ~b2;
+% %                     display("b2 corrected")       
+%                 elseif(~p1 && p2 && p3) 
+%                     b3 = ~b3; 
+% %                     display("b3 corrected")
+% %                 else
+% %                     display("not corrected")
+%                 end
           
                 new_bits = [new_bits,b1,b2,b3];  % Don't need to write new_bits
              

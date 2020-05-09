@@ -285,7 +285,7 @@ end
 
 end
 
-function [cle,dir] = channol(sig_1,sig_2,mu,sig)
+function [dir,cle] = channol(sig_1,sig_2,mu,sig)
 cle = sig_1+sig_2;
 dir = cle+normrnd(mu,sig);
 end
