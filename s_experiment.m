@@ -26,13 +26,24 @@ else
     b3 = 1; 
 end 
 
-
 % 500, 1000, 2000, 4000, 8000
-f1 = 500; 
-f2 = 1000; 
-f3 = 2000; 
-
-
+if(length(t) >= (3*n)/4)
+    f1 = 500; 
+    f2 = 1000; 
+    f3 = 2000; 
+elseif(length(t) >= n/2)
+    f1 = 2000; 
+    f2 = 4000; 
+    f3 = 8000; 
+elseif(length(t) >= 1/4)
+    f1 = 1000; 
+    f2 = 2000; 
+    f3 = 4000; 
+else
+    f1 = 500; 
+    f2 = 2000; 
+    f3 = 8000; 
+end 
 %% Start doing stuff 
 
 if isempty(data)
@@ -52,7 +63,6 @@ if data(1,1) == 0 % if on
             signal_point = (b1 * sin(2*pi()*f1*t(1,n)) + ...
             b2 * sin(2*pi()*f2*t(1,n)) + ...
             b3 * sin(2*pi()*f3*t(1,n)))/(1.5);
-            
             % Results: 7330 with signal / 1.6 and time step of 435
             %          7420 with signal / sqrt(2) and time step of 435 (but ran
             %          out of energy)

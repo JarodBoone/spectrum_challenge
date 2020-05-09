@@ -12,9 +12,23 @@ new_bits = [];
 
 new_data = data; 
 % 500, 1000, 2000, 4000, 8000
-f1 = 500; 
-f2 = 1000; 
-f3 = 2000; 
+if(length(t) >= (3*n)/4)
+    f1 = 500; 
+    f2 = 1000; 
+    f3 = 2000; 
+elseif(length(t) >= n/2)
+    f1 = 2000; 
+    f2 = 4000; 
+    f3 = 8000; 
+elseif(length(t) >= 1/4)
+    f1 = 1000; 
+    f2 = 2000; 
+    f3 = 4000; 
+else
+    f1 = 500; 
+    f2 = 2000; 
+    f3 = 8000; 
+end 
 
 %% Start doing stuff 
 
