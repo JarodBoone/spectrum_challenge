@@ -7,7 +7,7 @@ signal_point = 0;
 on = 0; 
 startup_delay = 1000; 
 pause = 3; 
-send_steps = 435; 
+send_steps = 250; 
 new_bits = []; 
 
 new_data = data; 
@@ -31,9 +31,7 @@ if e == 0 || r_trans(end,end) == 154 || r_reci(end,end) == 198
     data(1,1) = 1;
 end
 
-if length(t) == n || length(t) == n + 1
-    new_bits = zeros(1, 10000);
-end
+if t < 5 || 
 
 if data(1,1) == 0 % if on 
     if data(1,2) <= 0 % if done with startup delay
@@ -64,18 +62,18 @@ if data(1,1) == 0 % if on
                 if (dot(wave,a6) > 0) b6 = 1;
                 else b6 = 0; end
                 
-                p1 = xor(xor(b1,b2),b4); 
-                p2 = xor(xor(b1,b3),b5);
-                p3 = xor(xor(b2,b3),b6); 
-                
-                if (p1 && p2 && ~p3) 
-                    b1 = ~b1;
-                elseif(p1 && ~p2 && p3) 
-                    b2 = ~b2;
-                        
-                elseif(~p1 && p2 && p3) 
-                    b3 = ~b3;     
-                end
+%                 p1 = xor(xor(b1,b2),b4); 
+%                 p2 = xor(xor(b1,b3),b5);
+%                 p3 = xor(xor(b2,b3),b6); 
+%                 
+%                 if (p1 && p2 && ~p3) 
+%                     b1 = ~b1;
+%                 elseif(p1 && ~p2 && p3) 
+%                     b2 = ~b2;
+%                         
+%                 elseif(~p1 && p2 && p3) 
+%                     b3 = ~b3;     
+%                 end
           
                 new_bits = [new_bits,b1,b2,b3];  % Don't need to write new_bits
              
