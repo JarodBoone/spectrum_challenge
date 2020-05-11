@@ -7,7 +7,7 @@ signal_point = 0;
 on = 0; 
 startup_delay = 1000; 
 pause = 3; 
-send_steps = 440; 
+send_steps = 400; 
 new_bits = []; 
 
 new_data = data; 
@@ -41,9 +41,9 @@ if e == 0 || r_trans(end,end) == 154 || r_reci(end,end) == 198
     data(1,1) = 1;
 end
 
-if length(t) == n || length(t) == n + 1
-    new_bits = zeros(1, 10000);
-end
+% if length(t) == n || length(t) == n + 1
+%     new_bits = zeros(1, 10000);
+% end
 
 if data(1,1) == 0 % if on 
     if data(1,2) <= 0 % if done with startup delay

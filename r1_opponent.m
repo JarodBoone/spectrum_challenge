@@ -7,17 +7,39 @@ signal_point = 0;
 on = 0; 
 startup_delay = 1000; 
 pause = 3; 
-send_steps = 500; 
+send_steps = 410; 
 new_bits = []; 
 
 new_data = data; 
-% 500, 1000, 2000, 4000, 8000
-f1 = 100; 
-f2 = 200; 
-f3 = 400; 
-f4 = 800; 
-% f5 = 8000; 
-% f6 = 250; 
+% % 500, 1000, 2000, 4000, 8000
+% f1 = 100; 
+% f2 = 200; 
+% f3 = 400; 
+% f4 = 800; 
+% % f5 = 8000; 
+% % f6 = 250; 
+
+if(length(t) >= (3*n)/4)
+    f1 = 250; 
+    f2 = 2000; 
+    f3 = 4000; 
+%     f4 = 8000;
+elseif(length(t) >= n/2)
+    f1 = 300; 
+    f2 = 1200;
+    f3 = 2400; 
+%     f4 = 4800; 
+elseif(length(t) >= 1/4)
+    f1 = 700; 
+    f2 = 1400; 
+    f3 = 2800;
+%     f4 = 5600;
+else
+    f1 = 800; 
+    f2 = 1600; 
+    f3 = 3200;
+%     f4 = 6400;
+end 
 
 %% Start doing stuff 
 
@@ -31,9 +53,9 @@ if e == 0 || r_trans(end,end) == 154 || r_reci(end,end) == 198
     data(1,1) = 1;
 end
 
-if length(t) == n || length(t) == n + 1
-    new_bits = zeros(1, 10000);
-end
+% if length(t) == n || length(t) == n + 1
+%     new_bits = zeros(1, 10000);
+% end
 
 if data(1,1) == 0 % if on 
     if data(1,2) <= 0 % if done with startup delay
@@ -43,10 +65,10 @@ if data(1,1) == 0 % if on
             else
                 new_data(1,3) = 0;
                 new_data(1,2) = 3;
-                a1 = cos(2*pi()*f1*t(1,n-send_steps:n));
+                a1 = sin(2*pi()*f1*t(1,n-send_steps:n));
                 a2 = sin(2*pi()*f2*t(1,n-send_steps:n));
-                a3 = cos(2*pi()*f3*t(1,n-send_steps:n));
-                a4 = sin(2*pi()*f4*t(1,n-send_steps:n));
+                a3 = sin(2*pi()*f3*t(1,n-send_steps:n));
+%                 a4 = sin(2*pi()*f4*t(1,n-send_steps:n));
 
                 wave = r_trans(n-send_steps:n);
                 
@@ -58,10 +80,10 @@ if data(1,1) == 0 % if on
                 else b2 = 0; end
                 if (dot(wave,a3) > 0) b3 = 1;
                 else b3 = 0; end
-                if (dot(wave,a4) > 0) b4 = 1;
-                else b4 = 0; end
+%                 if (dot(wave,a4) > 0) b4 = 1;
+%                 else b4 = 0; end
                 
-                new_bits = [new_bits,b1,b2,b3,b4];  % Don't need to write new_bits
+                new_bits = [new_bits,b1,b2,b3];  % Don't need to write new_bits
              
             
      
