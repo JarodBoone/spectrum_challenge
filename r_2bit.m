@@ -1,4 +1,4 @@
-function [signal_point,new_data,new_bits] = r1_no_p(r_reci,r_trans,t,n,e,data)
+function [signal_point,new_data,new_bits] = r_2bit(r_reci,r_trans,t,n,e,data)
 
 % Want to use a 4 dimensional signal space to send 5 bits (3 info 2 parity)
 % We iterate over the message bits by 3
@@ -7,43 +7,30 @@ signal_point = 0;
 on = 0; 
 startup_delay = 1000; 
 pause = 3; 
-send_steps = 400; 
+send_steps = 200; 
 new_bits = []; 
 
 new_data = data; 
 % 500, 1000, 2000, 4000, 8000
 if(length(t) >= (3*n)/4)
-    f1 = 500; 
-    f2 = 1000; 
-    f3 = 2000; 
-elseif(length(t) >= n/2)
-    f1 = 2000; 
-    f2 = 4000; 
-    f3 = 8000; 
-elseif(length(t) >= 1/4)
     f1 = 1000; 
     f2 = 2000; 
-    f3 = 4000; 
+elseif(length(t) >= n/2)
+    f1 = 3000; 
+    f2 = 6000; 
+elseif(length(t) >= 1/4)
+    f1 = 4000; 
+    f2 = 8000; 
 else
-    f1 = 500; 
-    f2 = 2000; 
-    f3 = 8000; 
+    f1 = 1500; 
+    f2 = 3000; 
 end 
 %% Start doing stuff 
 
 if isempty(data)
     data = [on startup_delay 0];
     new_data = data;
-    r_trans = [0 0]; %Override transmission history ??
 end
-
-if e == 0 || r_trans(end,end) == 154 || r_reci(end,end) == 198
-    data(1,1) = 1;
-end
-
-% if length(t) == n || length(t) == n + 1
-%     new_bits = zeros(1, 10000);
-% end
 
 if data(1,1) == 0 % if on 
     if data(1,2) <= 0 % if done with startup delay
@@ -55,19 +42,23 @@ if data(1,1) == 0 % if on
                 new_data(1,2) = 3;
                 a1 = sin(2*pi()*f1*t(1,n-send_steps:n));
                 a2 = sin(2*pi()*f2*t(1,n-send_steps:n));
-                a3 = sin(2*pi()*f3*t(1,n-send_steps:n));
                 wave = r_trans(n-send_steps:n);
                 
-%                 display(dot(wave,a4))
+                dot1 = dot(wave,a1);
+                dot2 = dot(wave,a2);
                 
-                if (dot(wave,a1) > 0) b1 = 1;
-                else b1 = 0; end
-                if (dot(wave,a2) > 0) b2 = 1;
-                else b2 = 0; end
-                if (dot(wave,a3) > 0) b3 = 1;
-                else b3 = 0; end
+                if ((dot1 > 0))
+                    b1 = 1;
+                else
+                    b1 = 0; 
+                end
+                if ((dot2 > 0)) 
+                    b2 = 1;
+                else
+                    b2 = 0; 
+                end
 
-                new_bits = [b1,b2,b3];  % Don't need to write new_bits
+                new_bits = [b1,b2];  % Don't need to write new_bits
              
             end
         end
@@ -86,3 +77,5 @@ if data(1,1) == 0 % if on
 end
 
 end
+
+

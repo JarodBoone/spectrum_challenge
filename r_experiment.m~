@@ -1,4 +1,4 @@
-function [signal_point,new_data,new_bits] = r_experiment(r_reci,r_trans,t,n,e,data)
+function [signal_point,new_data,new_bits] = r1_no_p(r_reci,r_trans,t,n,e,data)
 
 % Want to use a 4 dimensional signal space to send 5 bits (3 info 2 parity)
 % We iterate over the message bits by 3
@@ -7,23 +7,39 @@ signal_point = 0;
 on = 0; 
 startup_delay = 1000; 
 pause = 3; 
-send_steps = 200; 
+send_steps = 460; 
 new_bits = []; 
 
 new_data = data; 
 % 500, 1000, 2000, 4000, 8000
 if(length(t) >= (3*n)/4)
-    f1 = 1000; 
-    f2 = 2000; 
+    f1 = 500; 
+    f2 = 1000; 
+    f3 = 2000; 
+    f4 = 4000;
+    f5 = 8000;
+    f6 = 250;
 elseif(length(t) >= n/2)
-    f1 = 3000; 
-    f2 = 6000; 
+    f1 = 300; 
+    f2 = 600; 
+    f3 = 1200; 
+    f4 = 2400;
+    f5 = 4800;
+    f6 = 9600;
 elseif(length(t) >= 1/4)
-    f1 = 4000; 
-    f2 = 8000; 
+    f1 = 400; 
+    f2 = 800; 
+    f3 = 1600; 
+    f4 = 3200;
+    f5 = 6400;
+    f6 = 12800;
 else
-    f1 = 1500; 
-    f2 = 3000; 
+    f1 = 350; 
+    f2 = 700; 
+    f3 = 1400;
+    f4 = 2800;
+    f5 = 5600;
+    f6 = 11200;
 end 
 %% Start doing stuff 
 
@@ -42,23 +58,27 @@ if data(1,1) == 0 % if on
                 new_data(1,2) = 3;
                 a1 = sin(2*pi()*f1*t(1,n-send_steps:n));
                 a2 = sin(2*pi()*f2*t(1,n-send_steps:n));
+                a3 = sin(2*pi()*f3*t(1,n-send_steps:n));
+                a4 = sin(2*pi()*f4*t(1,n-send_steps:n));
+                a5 = sin(2*pi()*f5*t(1,n-send_steps:n));
+                a6 = sin(2*pi()*f6*t(1,n-send_steps:n));
                 wave = r_trans(n-send_steps:n);
                 
                 dot1 = dot(wave,a1);
                 dot2 = dot(wave,a2);
+                dot3 = dot(wave,a3);
+                dot4 = dot(wave,a4);
+                dot5 = dot(wave,a5);
+                dot6 = dot(wave,a6);
                 
-                if ((dot1 > 0))
-                    b1 = 1;
-                else
-                    b1 = 0; 
-                end
-                if ((dot2 > 0)) 
-                    b2 = 1;
-                else
-                    b2 = 0; 
-                end
+                if (dot1 > 0 && dot2 > 0) b1 = 1;
+                else b1 = 0; end
+                if (dot(wave,a2) > 0) b2 = 1;
+                else b2 = 0; end
+                if (dot(wave,a3) > 0) b3 = 1;
+                else b3 = 0; end
 
-                new_bits = [b1,b2];  % Don't need to write new_bits
+                new_bits = [b1,b2,b3];  % Don't need to write new_bits
              
             end
         end

@@ -278,7 +278,7 @@ s1 = min(how_many_1,msg_size)*C_1;
 s2 = min(how_many_2,msg_size)*C_2;
 
 % Rate of expense from energy:
-e_rate = 1000;
+e_rate = 0;
 
 % Score calculator:
 if strcmp(game_mode,'test')
