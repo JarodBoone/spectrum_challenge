@@ -1,28 +1,15 @@
-function [signal_point,new_data,new_msg] = s_2bit(r_trans,r_reci,t,n,e,data,msg)
+function [signal_point,new_data,new_msg] = send_1_new(r_trans,r_reci,t,n,e,data,msg)
 
-% Want to use a 4 dimensional signal space to send 5 bits (3 info 2 parity)
-% We iterate over the message bits by 3
-% 32 cases 
 signal_point = 0;
-
 on = 0; 
 startup_delay = 1000; 
 pause = 3; 
 send_steps = 200; 
+repeat = 4;
 
-% score = 1987 with time step 200 and sp/1.22
 new_data = data; 
 new_msg = msg;
-if (length(msg) >= 3) 
-    if (msg(1) == 0) b1 = -1; 
-    else b1 = 1; end 
-    if (msg(2) == 0) b2 = -1; 
-    else b2 = 1; end 
-else
-    b1 = 1; 
-    b2 = 1; 
-end 
-
+                
 % 500, 1000, 2000, 4000, 8000
 if(length(t) >= (3*n)/4)
     f1 = 1000; 
@@ -40,17 +27,36 @@ end
 %% Start doing stuff 
 
 if isempty(data)
-    data = [on startup_delay 0];
+    data = [on startup_delay 0 repeat 0 0];
     new_data = data;
 end
 
-if data(1,1) == 0 % if on 
-    if data(1,2) <= 0 % if done with startup delay
-        if data(1,3) >= 0 % If still transmitting 
-            % Transmit a signal point 
-            signal_point = ((b1 * sin(2*pi()*f1*t(1,n)) + ...
-                b2 * sin(2*pi()*f2*t(1,n)))/(1.22)); 
-
+if data(1,1) == 0 
+    if data(1,2) <= 0
+        if data(1,3) >= 0 
+            % Attempt to repeat same 4 points
+            if new_data(4) == 4
+                if (length(msg) >= 3) 
+                    if (msg(1) == 0) b1 = -1; 
+                    else b1 = 1; end 
+                    if (msg(2) == 0) b2 = -1; 
+                    else b2 = 1; end 
+                else
+                    b1 = 1; 
+                    b2 = 1; 
+                end 
+                new_data(5) = b1;
+                new_data(6) = b2;
+            end
+            if new_data(4) > 0
+%                 display("signal points going, b1 = "+ b1)
+%                 display("sender b1 = "+b1)
+                signal_point = ((new_data(5) * sin(2*pi()*f1*t(1,n)) + ...
+                    new_data(6) * sin(2*pi()*f2*t(1,n)))/(1.22)); 
+                
+                new_data(4) = new_data(4) - 1;
+            end
+            new_data(4) = repeat;
             % countdown 3rd data index 
             if data(1,3)-1 > 0
                 new_data(1,3) = data(1,3) - 1;

@@ -8,7 +8,7 @@ signal_point = 0;
 on = 0; 
 startup_delay = 1000; 
 pause = 3; 
-send_steps = 500; 
+send_steps = 250; 
 
 new_data = data; 
 new_msg = msg;
@@ -21,11 +21,14 @@ if (length(msg) >= 4)
     else b3 = 1; end 
     if (msg(4) == 0) b4 = -1; 
     else b4 = 1; end
+    if (msg(5) == 0) b5 = -1; 
+    else b5 = 1; end
 else
     b1 = 1; 
     b2 = 1; 
     b3 = 1; 
     b4 = 1;
+    b5 = 1;
 end 
 
 
@@ -35,21 +38,25 @@ if(length(t) >= (3*n)/4)
     f2 = 1000; 
     f3 = 2000; 
     f4 = 4000;
+    f5 = 8000;
 elseif(length(t) >= n/2)
     f1 = 900;
     f2 = 1800; 
     f3 = 3600; 
     f4 = 7200; 
+    f5 = 450;
 elseif(length(t) >= 1/4)
     f1 = 700; 
     f2 = 1400; 
     f3 = 2800;
     f4 = 5600;
+    f5 = 350;
 else
     f1 = 800; 
     f2 = 1600; 
     f3 = 3200; 
     f4 = 6400;
+    f5 = 400;
 end 
 %% Start doing stuff 
 
@@ -70,7 +77,8 @@ if data(1,1) == 0 % if on
             signal_point = (b1 * sin(2*pi()*f1*t(1,n)) + ...
             b2 * sin(2*pi()*f2*t(1,n)) + ...
             b3 * sin(2*pi()*f3*t(1,n)) + ...
-            b4 * sin(2*pi()*f4*t(1,n)))/(1.8);
+            b4 * sin(2*pi()*f4*t(1,n)) + ...
+            b5 * sin(2*pi()*f5*t(1,n)))*(.52);
 
             % countdown 3rd data index 
             if data(1,3)-1 > 0
@@ -79,8 +87,8 @@ if data(1,1) == 0 % if on
                 new_data(1,3) = 0; % End the timer
                 new_data(1,2) = pause; % Add a startup delay 
                 
-                if length(new_msg) >= 5
-                    new_msg = msg(5:end);
+                if length(new_msg) >= 6
+                    new_msg = msg(6:end);
                 else
                     % End broadcast 
                     new_data(1) = 1;
