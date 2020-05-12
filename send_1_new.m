@@ -64,8 +64,6 @@ if data(1,1) == 0
 
             % start data(4) at its value 
             new_data(1,4) = repeat; 
-
-        
         end
     else 
         % Countdown startup delay

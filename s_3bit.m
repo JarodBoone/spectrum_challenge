@@ -54,10 +54,6 @@ if isempty(data)
     r_trans = [0 0]; %Override transmission history ??
 end
 
-% if e == 0 || r_trans(end,end) == 154 || r_reci(end,end) == 198
-%     data(1,1) = 1;
-% end
-
 if data(1,1) == 0 % if on 
     if data(1,2) <= 0 % if done with startup delay
         if data(1,3) >= 0 % If still transmitting 

@@ -57,7 +57,6 @@ if data(1,1) == 0 % if on
                 else
                     b2 = 0; 
                 end
-
                 new_data = [data,b1,b2]; 
                 new_data(4) = new_data(4) - 1;
             end
@@ -77,16 +76,9 @@ end
 %% Attempt to use scratchpad 
 
 if new_data(4) == 0
-
     b1 = round((new_data(5) + new_data(7) + new_data(9) + new_data(11))/4);
-%      display("new_data(5) = " + new_data(5))
-%      display("new_data(7) = "+ new_data(7))
-%      display("new_data(9) = "+ new_data(9))
-%      display("new_data(11) = "+ new_data(11))
-%     display("receiver b1 = "+ b1)
-
     b2 = round((new_data(6) + new_data(8) + new_data(10) + new_data(12))/4);
-    new_bits = [~b1,~b2];
+    new_bits = [b1,b2];
     data = [on startup_delay 0 repeat];
     new_data = data;
 end
