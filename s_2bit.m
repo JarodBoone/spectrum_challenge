@@ -9,7 +9,7 @@ on = 0;
 startup_delay = 1000; 
 pause = 3; 
 send_steps = 200; 
-
+display(length(msg))
 % score = 1987 with time step 200 and sp/1.22
 new_data = data; 
 new_msg = msg;

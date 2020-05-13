@@ -45,10 +45,10 @@ if data(1,1) == 0 % if on
             else
                 new_data(1,3) = 0;
                 new_data(1,2) = 3;
-                a1 = sin(2*pi()*f1*t(1,n-send_steps:n));
-                a2 = sin(2*pi()*f2*t(1,n-send_steps:n));
-                a3 = sin(2*pi()*f3*t(1,n-send_steps:n));
-                wave = r_trans(n-send_steps:n);
+                a1 = sin(2*pi()*f1*t(1,n-(send_steps * 2):2:n));
+                a2 = sin(2*pi()*f2*t(1,n-(send_steps * 2):2:n));
+                a3 = sin(2*pi()*f3*t(1,n-(send_steps * 2):2:n));
+                wave = r_trans(n-(send_steps * 2):2:n);
 
                 if (dot(wave,a1) > 0) b1 = 1;
                 else b1 = 0; end
