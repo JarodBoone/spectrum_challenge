@@ -2,9 +2,9 @@ function [signal_point,new_data,new_bits] = reci_1_new(r_reci,r_trans,t,n,e,data
 
 signal_point = 0;
 on = 0; 
-startup_delay = 90000; 
+startup_delay = 30000; 
 pause = 3; 
-send_steps = 500; 
+send_steps = 1000; 
 new_bits = []; 
 repeat = 6;
 
@@ -53,7 +53,7 @@ if data(1,1) == 0 % if on
             if data(1,3)-1 > 0
                 new_data(1,3) = data(1,3) - 1;
             else
-                display("received a message")
+                new_data(4) = data(4) - 1;
                 new_data(1,3) = 0;
                 new_data(1,2) = 3;
                 a1 = sin(2*pi()*f1*t(1,n-(send_steps * 2):2:n));
@@ -82,7 +82,6 @@ if data(1,1) == 0 % if on
                 else b5_r = 0; end
                 if (dot6 > 0) b6_r = 1;
                 else b6_r = 0; end
-                
                 new_data = [data,b1_r,b2_r,b3_r,b4_r,b5_r,b6_r]; 
                 new_data(4) = new_data(4) - 1;
             end
@@ -100,8 +99,8 @@ if data(1,1) == 0 % if on
 end
 
 %% Attempt to use scratchpad 
+
 if new_data(4) == 0
-    display("outputting a message")
     b1 = new_data(5);
     b2 = new_data(11);
     b3 = new_data(17);
@@ -149,9 +148,7 @@ if new_data(4) == 0
     p17_n = xor(b16,b18);
     p18_n = xor(b17,b18);
     [b16, b17, b18] = parity_check(b16, b17, b18, p16_n, p17_n, p18_n, new_data(28), new_data(34), new_data(40));
-    
-    display("message received and bits are = "+b1+b2+b3)
-    
+
     new_bits = [b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16,b17,b18];
     data = [on startup_delay 0 repeat];
     new_data = data;
