@@ -1,4 +1,4 @@
-function [signal_point,new_data,new_bits] = r_3bit(r_reci,r_trans,t,n,e,data)
+function [signal_point,new_data,new_bits] = r_3bit_fight(r_reci,r_trans,t,n,e,data)
 
 % Want to use a 4 dimensional signal space to send 5 bits (3 info 2 parity)
 % We iterate over the message bits by 3
@@ -7,28 +7,33 @@ signal_point = 0;
 on = 0; 
 startup_delay = 1000; 
 pause = 3; 
-send_steps = 455; 
+send_steps = 150; 
 new_bits = []; 
 
 new_data = data; 
-% 500, 1000, 2000, 4000, 8000
-if(length(t) >= (3*n)/4)
-    f1 = 500; 
-    f2 = 1000; 
-    f3 = 2000; 
-elseif(length(t) >= n/2)
-    f1 = 2000; 
-    f2 = 4000; 
-    f3 = 8000; 
-elseif(length(t) >= 1/4)
+
+if(n >= (7*length(t))/8)
+    f1 = 150; 
+    f2 = 300;  
+elseif(n >= (3*length(t))/4)
     f1 = 1000; 
     f2 = 2000; 
-    f3 = 4000; 
-else
-    f1 = 500; 
+elseif(n >= (5*length(t))/8)
+    f1 = 155; 
+    f2 = 310; 
+elseif(n >= length(t)/2)
+    f1 = 200; 
     f2 = 2000; 
-    f3 = 8000; 
-end 
+elseif(n >= (3*length(t))/8)
+    f1 = 200; 
+    f2 = 500; 
+elseif(n >= length(t)/4)
+    f1 = 1500; 
+    f2 = 3000; 
+else
+    f1 = 160; 
+    f2 = 320; 
+end  
 %% Start doing stuff 
 
 if isempty(data)
@@ -44,10 +49,10 @@ if data(1,1) == 0 % if on
                 new_data(1,3) = data(1,3) - 1;
             else
                 new_data(1,3) = 0;
-                new_data(1,2) = 3;
+                new_data(1,2) = pause;
                 a1 = sin(2*pi()*f1*t(1,n-(send_steps * 2):2:n));
-                a2 = sin(2*pi()*f2*t(1,n-(send_steps * 2):2:n));
-                a3 = sin(2*pi()*f3*t(1,n-(send_steps * 2):2:n));
+                a2 = cos(2*pi()*f1*t(1,n-(send_steps * 2):2:n));
+                a3 = sin(2*pi()*f2*t(1,n-(send_steps * 2):2:n));
                 wave = r_trans(n-(send_steps * 2):2:n);
 
                 if (dot(wave,a1) > 0) b1 = 1;

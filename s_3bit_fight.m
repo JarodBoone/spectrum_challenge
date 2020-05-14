@@ -1,16 +1,10 @@
-function [signal_point,new_data,new_msg] = s_3bit(r_trans,r_reci,t,n,e,data,msg)
+function [signal_point,new_data,new_msg] = s_3bit_fight(r_trans,r_reci,t,n,e,data,msg)
 
-% Want to use a 4 dimensional signal space to send 5 bits (3 info 2 parity)
-% We iterate over the message bits by 3
-% 32 cases 
 signal_point = 0;
-
 on = 0; 
 startup_delay = 1000; 
 pause = 3; 
-send_steps = 455; 
-
-% score = 1908 for 455 and sp/1.51
+send_steps = 150; 
 
 new_data = data; 
 new_msg = msg;
@@ -27,31 +21,33 @@ else
     b3 = 1; 
 end 
 
-
-% 500, 1000, 2000, 4000, 8000
-if(length(t) >= (3*n)/4)
-    f1 = 500; 
-    f2 = 1000; 
-    f3 = 2000; 
-elseif(length(t) >= n/2)
-    f1 = 2000; 
-    f2 = 4000; 
-    f3 = 8000; 
-elseif(length(t) >= 1/4)
+if(n >= (7*length(t))/8)
+    f1 = 150; 
+    f2 = 300;  
+elseif(n >= (3*length(t))/4)
     f1 = 1000; 
     f2 = 2000; 
-    f3 = 4000; 
-else
-    f1 = 500; 
+elseif(n >= (5*length(t))/8)
+    f1 = 155; 
+    f2 = 310; 
+elseif(n >= length(t)/2)
+    f1 = 200; 
     f2 = 2000; 
-    f3 = 8000; 
-end 
+elseif(n >= (3*length(t))/8)
+    f1 = 200; 
+    f2 = 500; 
+elseif(n >= length(t)/4)
+    f1 = 1500; 
+    f2 = 3000; 
+else
+    f1 = 160; 
+    f2 = 320; 
+end  
 %% Start doing stuff 
 
 if isempty(data)
     data = [on startup_delay 0];
     new_data = data;
-    r_trans = [0 0]; %Override transmission history ??
 end
 
 if data(1,1) == 0 % if on 
@@ -59,15 +55,8 @@ if data(1,1) == 0 % if on
         if data(1,3) >= 0 % If still transmitting 
             % Transmit a signal point 
             signal_point = (b1 * sin(2*pi()*f1*t(1,n)) + ...
-            b2 * sin(2*pi()*f2*t(1,n)) + ...
-            b3 * sin(2*pi()*f3*t(1,n)))/(1.51);
-            
-            % Results: 7330 with signal / 1.6 and time step of 435
-            %          7420 with signal / sqrt(2) and time step of 435 (but ran
-            %          out of energy)
-            %          7515 with signal / 1.5 and time step of 440 
-            %          7460 with signal / 1.7, values of +-1.1 and time
-            %          step of 440
+            b2 * cos(2*pi()*f1*t(1,n)) + ...
+            b3 * sin(2*pi()*f2*t(1,n)))/(1.51);
             
             % countdown 3rd data index 
             if data(1,3)-1 > 0
